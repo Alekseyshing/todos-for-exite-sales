@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { deleteProject, setCurrentProject, updateProjectTitle, markTaskDone, addTask } from '../slices/projectSlice';
@@ -17,6 +17,17 @@ const Project = ({ projects }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [newTaskName, setNewTaskName] = useState('');
 
+  useEffect(() => {
+    const storedQuery = localStorage.getItem('searchQuery');
+    if (storedQuery) {
+      setSearchQuery(storedQuery);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('searchQuery', searchQuery);
+  }, [searchQuery]);
+
   const handleDeleteProject = () => {
     dispatch(deleteProject(project.id));
     navigate('/');
@@ -28,7 +39,6 @@ const Project = ({ projects }) => {
       setNewTaskName('');
     }
   };
-
 
   const handleSearchQueryChange = e => {
     const query = e.target.value;
@@ -69,4 +79,5 @@ const Project = ({ projects }) => {
 };
 
 export default Project;
+
 
