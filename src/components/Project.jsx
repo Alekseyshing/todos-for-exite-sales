@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { deleteProject, setCurrentProject, updateProjectTitle } from '../slices/projectSlice';
-import { addTask } from '../slices/taskSlice';
-import Task from './Task';
-import { useNavigate } from 'react-router-dom';
-import { saveState } from '../utils/localStorage';
+import { useParams, useNavigate } from 'react-router-dom';
+import { deleteProject, setCurrentProject, updateProjectTitle, markTaskDone, addTask } from '../slices/projectSlice';
+import Task from './Task/Task';
 
 const Project = ({ projects }) => {
   const dispatch = useDispatch();
@@ -15,21 +12,27 @@ const Project = ({ projects }) => {
   const { projectId } = useParams();
 
   const project = projects.find(p => p.id === projectId);
+  const tasks = project.tasks;
 
-  const handleTitleChange = e => {
-    const title = e.target.value;
-    dispatch(updateProjectTitle({ id: project.id, title }));
-  };
+  const [searchQuery, setSearchQuery] = useState('');
+  const [newTaskName, setNewTaskName] = useState('');
 
-  const handleDeleteClick = () => {
-    const updatedState = dispatch(deleteProject(project.id));
-    saveState(updatedState);
-    navigate('/')
+  const handleDeleteProject = () => {
+    dispatch(deleteProject(project.id));
+    navigate('/');
   };
 
   const handleAddTask = () => {
-    dispatch(addTask({ projectId: project.id }));
-    navigate(`/projects/${project.id}/task`);
+    if (newTaskName) {
+      dispatch(addTask({ projectId: project.id, taskName: newTaskName }));
+      setNewTaskName('');
+    }
+  };
+
+
+  const handleSearchQueryChange = e => {
+    const query = e.target.value;
+    setSearchQuery(query);
   };
 
   const handleProjectClick = () => {
@@ -37,25 +40,33 @@ const Project = ({ projects }) => {
   };
 
   const isCurrentProject = currentProjectId === project.id;
+  const filteredTasks = Array.isArray(tasks)
+    ? project.tasks.filter(task => task.name?.toLowerCase().includes(searchQuery.toLowerCase()))
+    : [];
 
   return (
     <div className={`project ${isCurrentProject ? 'active' : ''}`} onClick={handleProjectClick}>
-      {/* <input type="text" onChange={handleTitleChange} /> */}
-      <h1>{project.title}</h1>
-      <button className="delete" onClick={handleDeleteClick}>
-        Delete
+      <h2>{project.name}</h2>
+      <button className="delete-project" onClick={handleDeleteProject}>
+        Delete project
       </button>
-      <button className="add-task" onClick={handleAddTask}>
-        Add task
-      </button>
+      <div className="add-task-container">
+        <input type="text" placeholder="Enter new task" value={newTaskName} onChange={e => setNewTaskName(e.target.value)} />
+        <button className="add-task" onClick={handleAddTask}>
+          Add task
+        </button>
+      </div>
+      <input type="text" placeholder="Search tasks" value={searchQuery} onChange={handleSearchQueryChange} />
       {isCurrentProject && (
         <ul className="task-list">
-          {Array.isArray(project.tasks) && projects.tasks.map(task => (
-            <Task key={task.id} id={task.id} title={task.title} subtasks={task.subtasks} done={task.done} />
+          {filteredTasks.map(task => (
+            <Task key={task.id} projectId={projectId} id={task.id} title={task.name} subtasks={task.subtasks} done={task.done} />
           ))}
         </ul>
       )}
     </div>
   );
-}; export default Project
+};
+
+export default Project;
 

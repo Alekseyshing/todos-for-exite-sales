@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addProject } from '../slices/projectSlice';
-import ProjectList from './ProjectList';
+import { addProject } from '../../slices/projectSlice';
+import ProjectList from '../ProjectList/ProjectList';
 import { v4 as uuidv4 } from 'uuid';
+import styles from './form.module.scss'
 
 const ProjectForm = ({ projects }) => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const ProjectForm = ({ projects }) => {
 
   const handleAddProject = (e) => {
     e.preventDefault();
+    if (!title) return; // if title is empty, return early
     const id = uuidv4();
     dispatch(addProject({ id, title }));
     setTitle('');
@@ -21,9 +23,9 @@ const ProjectForm = ({ projects }) => {
 
   return (
     <div>
-      <div className="project-form">
+      <div className={styles.project_form}>
         <input type="text" placeholder="Enter project name" value={title} onChange={handleTitleChange} />
-        <button className="add-project" onClick={handleAddProject}>
+        <button className={styles.add_project} onClick={handleAddProject} disabled={!title}>
           Add project
         </button>
       </div>
@@ -33,3 +35,4 @@ const ProjectForm = ({ projects }) => {
 };
 
 export default ProjectForm;
+

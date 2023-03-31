@@ -1,0 +1,85 @@
+.project_form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  input {
+    flex-grow: 1;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+
+    &:focus {
+      outline: none;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  button.add_project {
+    background-color: #66a5ff;
+    color: #fff;
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0063cc;
+    }
+
+    &:disabled {
+      background-color: #c7c7c7;
+      cursor: not-allowed;
+    }
+  }
+
+  @media (max-width: 768px) {
+    /* adjust styles for screens with max width of 768px */
+    flex-direction: column;
+
+    input {
+      margin-right: 0;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    button.add_project {
+      font-size: 1rem;
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+
+    /* adjust styles for screens with width between 768px and 1024px */
+    input {
+      font-size: 1.25rem;
+      padding: 0.75rem;
+    }
+
+    button.add_project {
+      font-size: 1.25rem;
+      padding: 0.75rem 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+
+    /* adjust styles for screens with width larger than 1024px */
+    input {
+      font-size: 1.5rem;
+      padding: 0.5rem;
+    }
+
+    button.add_project {
+      font-size: 1.5rem;
+      padding: 0.5rem 1rem;
+    }
+  }
+}
