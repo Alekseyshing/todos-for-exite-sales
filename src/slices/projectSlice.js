@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { saveState } from '../utils/localStorage';
+import { findParentSubtask } from '../utils/findSubtask';
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
@@ -57,12 +58,24 @@ export const projectSlice = createSlice({
       if (project) {
         project.tasks = project.tasks.filter(task => task.id !== action.payload.taskId);
       }
+      // const { projectId, taskId, subtaskId } = action.payload;
+
+      // console.log(projectId);
+      // console.log(taskId);
+      // console.log(subtaskId);
+      // const project = state.projects.find(project => project.id === projectId);
+      // if (project) {
+      //   const task = project.tasks.find(task => task.id === taskId);
+      //   if (task) {
+      //     const subtaskIndex = task.subtasks.findIndex(subtask => subtask.id === subtaskId);
+      //     if (subtaskIndex !== -1) {
+      //       task.subtasks.splice(subtaskIndex, 1);
+      //     }
+      //   }
+      // }
     },
     markTaskDone: (state, action) => {
       const { projectId, taskId, done } = action.payload;
-      console.log(projectId);
-      console.log(taskId);
-      console.log(done);
       const project = state.projects.find(project => project.id === projectId);
       if (project) {
         const task = project.tasks.find(task => task.id === taskId);
@@ -82,17 +95,27 @@ export const projectSlice = createSlice({
       }
     },
     addSubtask: (state, action) => {
-      const { projectId, taskId, subtaskName } = action.payload;
+      const { projectId, taskId, subtask } = action.payload;
       const project = state.projects.find(project => project.id === projectId);
       if (project) {
         const task = project.tasks.find(task => task.id === taskId);
         if (task) {
           task.subtasks.push({
             id: uuidv4(),
-            name: subtaskName,
+            name: subtask.title,
             done: false,
             subtasks: []
           });
+        } else {
+          const parentSubtask = findParentSubtask(project.tasks, taskId);
+          if (parentSubtask) {
+            parentSubtask.subtasks.push({
+              id: uuidv4(),
+              name: subtask.title,
+              done: false,
+              subtasks: []
+            });
+          }
         }
       }
     },

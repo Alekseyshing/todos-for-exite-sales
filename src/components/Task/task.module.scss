@@ -1,59 +1,183 @@
-.task {
+// .task_container {
+
+//   display: flex;
+//   flex-direction: column;
+
+//   .task {
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: space-between;
+//     align-items: center;
+//     padding: 10px;
+//     border-bottom: 1px solid #ccc;
+//     font-size: 16px;
+//     line-height: 1.4;
+//     position: relative;
+
+//     .done {
+//       text-decoration: line-through;
+//       background-color: #afffa0;
+//       opacity: 0.4;
+//     }
+
+//     &_title {
+//       flex-grow: 1;
+//       display: flex;
+//       align-items: center;
+//       justify-content: space-between;
+//     }
+
+//     &_buttons {
+//       margin-left: 10px;
+//       display: flex;
+
+//       .task_button {
+//         margin-left: 5px;
+//         font-size: 14px;
+//         padding: 5px 10px;
+//         border: none;
+//         border-radius: 4px;
+//         cursor: pointer;
+
+
+//         &:hover {
+//           opacity: 0.8;
+//         }
+//       }
+
+//       button {
+//         background-color: #0077ff;
+//         color: white;
+
+//         &:hover {
+//           background-color: #0063cc;
+//         }
+//       }
+
+//       .delete_task_button {
+//         background-color: #ff7d73;
+//         color: white;
+
+//         &:hover {
+//           background-color: #d40e00;
+//         }
+//       }
+//     }
+//   }
+// }
+
+.task_container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-  font-size: 16px;
-  line-height: 1.4;
-  position: relative;
+  flex-direction: column;
 
-  .done {
-    text-decoration: line-through;
-    background-color: #afffa0;
-    opacity: 0.4;
-  }
-
-  &_title {
-    flex-grow: 1;
+  .task {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+    line-height: 1.4;
+    position: relative;
+
+    .done {
+      text-decoration: line-through;
+      background-color: #afffa0;
+      opacity: 0.4;
+    }
+
+    &_title {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &_buttons {
+      margin-left: 10px;
+      display: flex;
+
+      .task_button {
+        margin-left: 5px;
+        font-size: 14px;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        &.delete_task_button {
+          background-color: #ff4444;
+          color: white;
+
+          &:hover {
+            background-color: #cc0000;
+          }
+        }
+      }
+
+      button {
+        background-color: #0077ff;
+        color: white;
+
+        &:hover {
+          background-color: #0063cc;
+        }
+      }
+    }
+
+    &_edit_input {
+      font-size: 16px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
   }
 
-  &_buttons {
-    margin-left: 10px;
+  .subtask {
+    margin-left: 20px;
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 
-    .task_button {
-      margin-left: 5px;
-      font-size: 14px;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+    form {
+      display: flex;
+      flex-direction: column;
 
-
-      &:hover {
-        opacity: 0.8;
+      input {
+        margin-bottom: 10px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
       }
-    }
 
-    button {
-      background-color: #0077ff;
-      color: white;
+      button {
+        margin-right: 10px;
+        font-size: 14px;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
 
-      &:hover {
-        background-color: #0063cc;
-      }
-    }
-
-    .delete_task_button {
-      background-color: #ff7d73;
-      color: white;
-
-      &:hover {
-        background-color: #d40e00;
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
   }
