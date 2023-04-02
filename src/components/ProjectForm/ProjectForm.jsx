@@ -13,18 +13,29 @@ const ProjectForm = ({ projects }) => {
     setTitle(e.target.value);
   };
 
-  const handleAddProject = (e) => {
-    e.preventDefault();
+  const handleAddProject = () => {
     if (!title) return; // if title is empty, return early
     const id = uuidv4();
     dispatch(addProject({ id, title }));
     setTitle('');
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleAddProject();
+    }
+  };
+
   return (
     <div>
       <div className={styles.project_form}>
-        <input type="text" placeholder="Enter project name" value={title} onChange={handleTitleChange} />
+        <input
+          type="text"
+          placeholder="Enter project name"
+          value={title}
+          onChange={handleTitleChange}
+          onKeyDown={handleKeyDown}
+        />
         <button className={styles.add_project} onClick={handleAddProject} disabled={!title}>
           Add project
         </button>

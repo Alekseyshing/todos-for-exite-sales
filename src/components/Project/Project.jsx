@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { deleteProject, setCurrentProject, updateProjectTitle, markTaskDone, addTask } from '../slices/projectSlice';
-import Task from './Task/Task';
+import { deleteProject, setCurrentProject, addTask } from '../../slices/projectSlice';
+import Task from '../Task/Task';
+import Draggable from 'react-draggable';
+import classNames from 'classnames';
+import styles from './project.module.scss'
 
 const Project = ({ projects }) => {
   const dispatch = useDispatch();
@@ -40,6 +43,12 @@ const Project = ({ projects }) => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleAddTask();
+    }
+  };
+
   const handleSearchQueryChange = e => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -54,23 +63,44 @@ const Project = ({ projects }) => {
     ? project.tasks.filter(task => task.name?.toLowerCase().includes(searchQuery.toLowerCase()))
     : [];
 
+
   return (
-    <div className={`project ${isCurrentProject ? 'active' : ''}`} onClick={handleProjectClick}>
+    <div
+      className={classNames(styles.project, {
+        [styles.active]: isCurrentProject
+      })}
+      onClick={handleProjectClick}>
       <h2>{project.name}</h2>
-      <button className="delete-project" onClick={handleDeleteProject}>
+      <button className={styles.delete_project} onClick={handleDeleteProject}>
         Delete project
       </button>
-      <div className="add-task-container">
-        <input type="text" placeholder="Enter new task" value={newTaskName} onChange={e => setNewTaskName(e.target.value)} />
-        <button className="add-task" onClick={handleAddTask}>
+      <button className={styles.back_to_projects} onClick={() => navigate('/')}>
+        Go to Projects
+      </button>
+      <div className={styles.add_task_container}>
+        <input
+          type="text"
+          placeholder="Enter new task"
+          value={newTaskName}
+          onChange={e => setNewTaskName(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button className={styles.add_task} onClick={handleAddTask}>
           Add task
         </button>
       </div>
       <input type="text" placeholder="Search tasks" value={searchQuery} onChange={handleSearchQueryChange} />
       {isCurrentProject && (
-        <ul className="task-list">
+        <ul className={styles.task_list}>
           {filteredTasks.map(task => (
-            <Task key={task.id} projectId={projectId} id={task.id} title={task.name} subtasks={task.subtasks} done={task.done} />
+            <Task
+              key={task.id}
+              projectId={projectId}
+              id={task.id}
+              title={task.name}
+              subtasks={task.subtasks}
+              done={task.done}
+            />
           ))}
         </ul>
       )}

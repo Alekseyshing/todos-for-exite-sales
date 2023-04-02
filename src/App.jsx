@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProjectForm from './components/ProjectForm/ProjectForm';
 import Task from './components/Task/Task';
-import Project from './components/Project';
+import Project from './components/Project/Project';
 import styles from './app.module.scss'
 
 const App = () => {
@@ -15,7 +15,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<ProjectForm projects={projects} />} />
           <Route path="/projects/:projectId" element={<Project projects={projects} />} />
-          <Route path="/projects/:projectId/task" element={<Task projects={projects} />} />
         </Routes>
       </div>
     </Router>

@@ -84,7 +84,7 @@ const Task = ({ projectId, id, title, subtasks, done, parentId }) => {
   }
 
   return (
-    <div className={styles.task_container}>
+    <div className={styles.task_container} >
       <div className={styles.task}>
         {editMode ? (
           <input

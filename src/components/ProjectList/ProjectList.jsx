@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { deleteProject, updateProjectTitle } from '../../slices/projectSlice';
+import { exportLocalStorageToJson } from '../../utils/exportLocalStorageToJson.js'
+import { importFromJsonFile } from '../../utils/importFromJsonFile.js'
 import styles from './list.module.scss'
 
 
@@ -27,10 +29,28 @@ const ProjectList = ({ projects }) => {
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    importFromJsonFile(file);
+    window.location.reload()
+  }
+
 
   return (
     <div className={styles.project_list}>
-      <h2>Projects</h2>
+      <h2 className={styles.project_list_title}>
+        Projects
+      </h2>
+
+      <div className={styles.project_list_data_section}>
+        <button
+          className={styles.project_list_export_btn}
+          onClick={() => exportLocalStorageToJson('data')}
+        >
+          Export Project
+        </button>
+        <input className={styles.project_list_import} placeholder="Upload Project" type="file" onChange={handleFileChange} />
+      </div>
       <ul>
         {projects.map((project) => (
           <li key={project.id}>
