@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { saveState } from '../utils/localStorage';
 import { findParentSubtask } from '../utils/findSubtask';
-import { v4 as uuidv4 } from 'uuid';
+import { uuidv4 } from 'uuid';
 
 const initialState = {
   projects: [],
