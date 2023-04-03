@@ -1,20 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { deleteProject, updateProjectTitle } from '../../slices/projectSlice';
 import { exportLocalStorageToJson } from '../../utils/exportLocalStorageToJson.js'
 import { importFromJsonFile } from '../../utils/importFromJsonFile.js'
+import { Reorder } from 'framer-motion'
+import { updateProjects } from '../../slices/projectSlice';
 import styles from './list.module.scss'
 
 
 const ProjectList = ({ projects }) => {
+
   const dispatch = useDispatch();
   const [renamingProjectId, setRenamingProjectId] = useState(null);
   const [newTitle, setNewTitle] = useState('');
-
   const handleDeleteClick = (id) => {
     dispatch(deleteProject(id));
   };
+
+  const [newProjects, setNewProjects] = useState(projects || [])
+
+  useEffect(() => {
+    setNewProjects(projects);
+  }, [projects]);
+
 
   const handleRenameClick = (id) => {
     setRenamingProjectId(id);
@@ -35,6 +44,11 @@ const ProjectList = ({ projects }) => {
     window.location.reload()
   }
 
+  const handleReorder = (newProjects) => {
+    setNewProjects(newProjects)
+    dispatch(updateProjects(newProjects));
+  };
+
 
   return (
     <div className={styles.project_list}>
@@ -51,9 +65,9 @@ const ProjectList = ({ projects }) => {
         </button>
         <input className={styles.project_list_import} placeholder="Upload Project" type="file" onChange={handleFileChange} />
       </div>
-      <ul>
-        {projects.map((project) => (
-          <li key={project.id}>
+      <Reorder.Group axys='y' values={newProjects} onReorder={handleReorder}>
+        {newProjects?.map((project) => (
+          <Reorder.Item key={project.id} value={project} >
             {renamingProjectId === project.id ? (
               <form onSubmit={handleRenameSubmit}>
                 <input
@@ -74,9 +88,9 @@ const ProjectList = ({ projects }) => {
                 </div>
               </>
             )}
-          </li>
+          </Reorder.Item >
         ))}
-      </ul>
+      </Reorder.Group>
     </div>
   );
 };

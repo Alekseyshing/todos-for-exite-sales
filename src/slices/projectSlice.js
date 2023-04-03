@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { saveState } from '../utils/localStorage';
 import { findParentSubtask } from '../utils/findSubtask';
-import { findTaskById, setTaskDone } from '../utils/findTaskById';
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
@@ -21,6 +20,9 @@ export const projectSlice = createSlice({
     },
     deleteProject: (state, action) => {
       state.projects = state.projects.filter(project => project.id !== action.payload);
+    },
+    updateProjects(state, action) {
+      state.projects = action.payload;
     },
     setCurrentProject: (state, action) => {
       state.currentProjectId = action.payload;
@@ -59,7 +61,6 @@ export const projectSlice = createSlice({
           return false;
         };
 
-        // Check if the task to edit is a subtask
         let editedInSubtasks = false;
         for (let i = 0; i < project.tasks.length; i++) {
           const task = project.tasks[i];
@@ -69,7 +70,6 @@ export const projectSlice = createSlice({
           }
         }
 
-        // If it's not a subtask, edit it in the parent task's tasks array
         if (!editedInSubtasks) {
           const taskToEdit = project.tasks.find(task => task.id === taskId);
           if (taskToEdit) {
@@ -96,7 +96,6 @@ export const projectSlice = createSlice({
           return false;
         };
 
-        // Check if the task to delete is a subtask
         let deletedFromSubtasks = false;
         for (let i = 0; i < project.tasks.length; i++) {
           const task = project.tasks[i];
@@ -106,7 +105,6 @@ export const projectSlice = createSlice({
           }
         }
 
-        // If it's not a subtask, delete it from the parent task's tasks array
         if (!deletedFromSubtasks) {
           project.tasks = project.tasks.filter(task => task.id !== taskId);
         }
@@ -139,7 +137,6 @@ export const projectSlice = createSlice({
           }
         }
 
-        // If it's not a subtask, mark it as done in the parent task's tasks array
         if (!markedInSubtasks) {
           const task = project.tasks.find(task => task.id === taskId);
           if (task) {
@@ -176,15 +173,6 @@ export const projectSlice = createSlice({
     setSearchFilter: (state, action) => {
       state.searchFilter = action.payload;
     },
-    dragTask: (state, action) => {
-      const { sourceProjectId, destinationProjectId, sourceTaskIndex, destinationTaskIndex } = action.payload;
-      const sourceProject = state.projects.find(project => project.id === sourceProjectId);
-      const destinationProject = state.projects.find(project => project.id === destinationProjectId);
-      if (sourceProject && destinationProject) {
-        const [taskToMove] = sourceProject.tasks.splice(sourceTaskIndex, 1);
-        destinationProject.tasks.splice(destinationTaskIndex, 0, taskToMove);
-      }
-    },
   },
 });
 
@@ -192,6 +180,7 @@ export const {
   addProject,
   updateProjectTitle,
   deleteProject,
+  updateProjects,
   setCurrentProject,
   updateProject,
   Title,
@@ -200,7 +189,6 @@ export const {
   markTaskDone,
   addSubtask,
   setSearchFilter,
-  dragTask,
   editTask
 } = projectSlice.actions;
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProjectForm from './components/ProjectForm/ProjectForm';
-import Task from './components/Task/Task';
 import Project from './components/Project/Project';
 import styles from './app.module.scss'
 

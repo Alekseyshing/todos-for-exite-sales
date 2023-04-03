@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { deleteProject, setCurrentProject, addTask } from '../../slices/projectSlice';
 import Task from '../Task/Task';
-import Draggable from 'react-draggable';
 import classNames from 'classnames';
 import styles from './project.module.scss'
 
