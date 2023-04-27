@@ -66,7 +66,6 @@ const Task = ({ projectId, id, title, subtasks, done, parentId }) => {
   };
 
 
-
   const renderSubtasks = (subtasks) => {
     if (subtasks.length > 0) {
       return subtasks.map((subtask) => (

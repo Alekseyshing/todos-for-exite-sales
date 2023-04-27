@@ -42,6 +42,8 @@ const Project = ({ projects }) => {
     }
   };
 
+  console.log(newTaskName);
+
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleAddTask();
